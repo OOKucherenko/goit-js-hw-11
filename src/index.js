@@ -1,8 +1,24 @@
-const axios = require('axios');
+import axios from 'axios';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const KEY = '33375890-4af8fec24bfa9f2a58a45d278';
-const URL = `https://pixabay.com/api/?key=${KEY}&q=cats&orientation=horizontal&safesearch=true&image_type=photo`;
-fetch(URL);
+
+const fetchQuery = async query => {
+  const URL = `https://pixabay.com/api/?key=${KEY}&q=${query}&orientation=horizontal&safesearch=true&image_type=photo`;
+
+  try {
+    const dataQuery = await axios.get(URL).then(res => res);
+    const { data } = dataQuery;
+
+    console.log('data', data);
+    return data;
+  } catch (error) {
+    {
+      console.log(error.message);
+    }
+  }
+};
+
+fetchQuery('cats');
 
 // // Make a request for a user with a given ID
 // axios
