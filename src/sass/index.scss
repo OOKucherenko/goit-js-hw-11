@@ -1,2 +1,45 @@
 @import './common';
 @import './example';
+
+.info {
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.info-item {
+  align-items: center;
+  text-align: center;
+  color: #6d7a88;
+  font-family: 'Orbitron';
+}
+
+.load-more {
+  display: none;
+}
+
+.gallery {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photo-card {
+  width: calc((100% - 3 * 10px) / 3);
+  margin-right: 10px;
+  margin-bottom: 10px;
+  box-shadow: -2px -2px 6px rgba(rgb(210, 200, 200), 0.6), 2px 2px 12px #0f1820;
+}
+
+a {
+  display: block;
+  height: 280px;
+}
+img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
