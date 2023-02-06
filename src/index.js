@@ -12,6 +12,7 @@ const refs = {
 let gallery = new SimpleLightbox('.gallery a');
 let page = 1;
 let query = '';
+//let markup = '';
 
 const reset = () => {
   page = 1;
@@ -19,7 +20,7 @@ const reset = () => {
   refs.images.innerHTML = '';
 };
 
-const onSubmit = e => {
+const onSubmit = (e, markup) => {
   reset();
   e.preventDefault();
 
@@ -46,12 +47,11 @@ const onSubmit = e => {
       return;
     }
     renderListCard(data);
-    // refs.images.insertAdjacentHTML('beforeend', markup);
-    gallery.refresh();
+    //refs.images.innerHTML = markup;
+    //gallery.refresh();
 
     refs.btn.style.display = 'flex';
   });
-
   e.currentTarget.reset();
   return query;
 };
@@ -65,8 +65,7 @@ const fetchQuery = async (query, page) => {
   try {
     const dataQuery = await axios.get(URL).then(res => res);
     const { data } = dataQuery;
-    // renderListCard(data);
-    // gallery.refresh();
+
     return data;
   } catch (error) {
     {
@@ -76,7 +75,7 @@ const fetchQuery = async (query, page) => {
 };
 
 const renderListCard = ({ hits }) => {
-  const markup = hits
+  markup = hits
     .map(
       ({
         webformatURL,
@@ -87,29 +86,23 @@ const renderListCard = ({ hits }) => {
         comments,
         downloads,
       }) => {
-        return `<a href="${largeImageURL}"><div class="photo-card">
-    <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-    </a>
-    <div class="info">
-      <p class="info-item">
-        <b>Likes</b> ${likes}
-      </p>
-      <p class="info-item">
-        <b>Views</b> ${views}
-      </p>
-      <p class="info-item">
-        <b>Comments</b> ${comments}
-      </p>
-      <p class="info-item">
-        <b>Downloads</b> ${downloads}
-      </p>
-    </div>
-  </div>
+        return `<div class="photo-card">
+        <a href="${largeImageURL}">
+            <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </a>
+        <div class="info">
+            <p class="info-item"><b>Likes</b><br>${likes}</p>
+            <p class="info-item"><b>Views</b><br>${views}</p>
+            <p class="info-item"><b>Comments</b><br>${comments}</p>
+            <p class="info-item"><b>Downloads</b><br>${downloads}</p>
+        </div>
+        </div>
   `;
       }
     )
     .join('');
   refs.images.insertAdjacentHTML('beforeend', markup);
+  gallery.refresh();
 };
 
 const onBthLoadMore = e => {
@@ -128,7 +121,7 @@ const onBthLoadMore = e => {
       refs.btn.style.display = 'none';
       return;
     }
-
+    renderListCard(data);
     refs.btn.style.display = 'flex';
   });
 };
